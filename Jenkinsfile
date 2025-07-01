@@ -8,20 +8,18 @@ node {
     }
   }
   stage('========== Push image ==========') {
-    def registryHost = "asia-northeast3-docker.pkg.dev" // Groovy 변수명은 camelCase 권장
+    env.REGISTRY_HOST = ""
     
     withCredentials([file(credentialsId: 'gcp-artifact-registry-jibaek-woodoku', variable: 'GCP_SA_KEY_FILE')]) {
         container('dind') {
             sh """
-            CURRENT_REGISTRY_HOST="${registryHost}" 
+            cat "${GCP_SA_KEY_FILE}" | docker login -u _json_key --password-stdin asia-northeast3-docker.pkg.dev
 
-            cat "${GCP_SA_KEY_FILE}" | docker login -u _json_key --password-stdin ${CURRENT_REGISTRY_HOST}
+            docker tag jenkins-docker-pipeline/woodoku "asia-northeast3-docker.pkg.dev/astute-curve-461807-v0/jibaek-woodoku/woodoku:${env.BUILD_NUMBER}"
+            docker tag jenkins-docker-pipeline/woodoku "asia-northeast3-docker.pkg.dev/astute-curve-461807-v0/jibaek-woodoku/woodoku:latest"
 
-            docker tag jenkins-docker-pipeline/woodoku "${CURRENT_REGISTRY_HOST}/astute-curve-461807-v0/jibaek-woodoku/woodoku:${env.BUILD_NUMBER}"
-            docker tag jenkins-docker-pipeline/woodoku "${CURRENT_REGISTRY_HOST}/astute-curve-461807-v0/jibaek-woodoku/woodoku:latest"
-
-            docker push "${CURRENT_REGISTRY_HOST}/astute-curve-461807-v0/jibaek-woodoku/woodoku:${env.BUILD_NUMBER}"
-            docker push "${CURRENT_REGISTRY_HOST}/astute-curve-461807-v0/jibaek-woodoku/woodoku:latest"
+            docker push "asia-northeast3-docker.pkg.dev/astute-curve-461807-v0/jibaek-woodoku/woodoku:${env.BUILD_NUMBER}"
+            docker push "asia-northeast3-docker.pkg.dev/astute-curve-461807-v0/jibaek-woodoku/woodoku:latest"
             """
         }
     }
