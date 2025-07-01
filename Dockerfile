@@ -1,4 +1,4 @@
-FROM node:14 as builder
+FROM node:17 as builder
 
 LABEL maintainer = "baekjaein <baek2506@gmail.com>"
 
