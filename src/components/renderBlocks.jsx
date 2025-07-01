@@ -1,6 +1,6 @@
 import RenderBlockRow from "./RenderBlockRow";
 
-function renderBlocks({blockCode}) {
+function RenderBlocks({blockCode}) {
 
     const defBlocks = {
         0: {
@@ -39,4 +39,4 @@ function renderBlocks({blockCode}) {
     );
 }
 
-export default renderBlocks;
+export default RenderBlocks;
