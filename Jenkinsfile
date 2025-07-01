@@ -9,11 +9,16 @@ node {
   }
   stage('========== Push image ==========') {
     container('dind') {
-      sh """
-        gcloud auth configure-docker ${env.GAR_LOCATION}-docker.pkg.dev
-        docker push jenkins-docker-pipeline/woodoku:${env.BUILD_NUMBER}
-        docker push jenkins-docker-pipeline/woodoku:latest
-      """
+        sh """
+        REGISTRY_HOST="asia-northeast3-docker.pkg.dev"
+        cat "${gcp-artifact-registry-jibaek-woodoku}" | docker login -u _json_key --password-stdin ${REGISTRY_HOST}
+
+        docker tag jenkins-docker-pipeline/woodoku "${REGISTRY_HOST}/astute-curve-461807-v0/jibaek-woodoku/woodoku:${env.BUILD_NUMBER}"
+        docker tag jenkins-docker-pipeline/woodoku "${REGISTRY_HOST}/astute-curve-461807-v0/jibaek-woodoku/woodoku:latest"
+
+        docker push "${REGISTRY_HOST}/astute-curve-461807-v0/jibaek-woodoku/woodoku:${env.BUILD_NUMBER}"
+        docker push "${REGISTRY_HOST}/astute-curve-461807-v0/jibaek-woodoku/woodoku:latest"
+        """
     }
   }
 }
