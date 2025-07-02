@@ -13,7 +13,7 @@ node {
 
     if (env.BRANCH_NAME == 'master') {
         branchTag = 'prod'
-    } elseif (env.BRANCH_NAME == 'develop') {
+    } else if (env.BRANCH_NAME == 'develop') {
         branchTag = 'dev'
     } else {
         // master나 develop이 아닌 다른 브랜치인 경우 처리
