@@ -4,7 +4,7 @@ node {
   }
   stage('========== Build image ==========') {
     container('dind') {
-      sh "docker build -t jenkins-docker-pipeline/woodoku ." // 여기에 "sh "가 한 번 더 있었어요. 제거했습니다.
+      sh "docker build -t jenkins-docker-pipeline/woodoku ." 
     }
   }
   stage('========== Push image ==========') {
