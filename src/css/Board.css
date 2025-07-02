@@ -31,11 +31,13 @@
 }
 
 .placed{
-    background-color: #4f8069;
+    /* background-color: #4f8069; */
+    background-color: #504f80;
 }
 
 .overlay{
-    background-color: #284236;
+    /* background-color: #284236; */
+    background-color: #282942;
 }
 
 .tray {
