@@ -10,15 +10,21 @@ node {
   stage('========== Push image ==========') {
     // declare branchTag variable
     def branchTag = ''
+    def currentBranchName = env.BRANCH_NAME
 
-    if (env.BRANCH_NAME == 'master') {
+    if (!currentBranchName) { // null 또는 빈 문자열인 경우
+        echo "경고: env.BRANCH_NAME이 설정되지 않았습니다. 'default' 브랜치로 간주합니다."
+        currentBranchName = "default" // 기본값 할당
+    }
+
+    if (currentBranchName == 'master') {
         branchTag = 'prod'
-    } else if (env.BRANCH_NAME == 'develop') {
+    } else if (currentBranchName == 'develop') {
         branchTag = 'dev'
     } else {
         // master나 develop이 아닌 다른 브랜치인 경우 처리
         // 예: 브랜치 이름을 그대로 사용하거나, 'feature' 등으로 설정
-        branchTag = env.BRANCH_NAME.replaceAll('[^a-zA-Z0-9-]', '-').toLowerCase()
+        branchTag = currentBranchName.replaceAll('[^a-zA-Z0-9-]', '-').toLowerCase()
         echo "경고: master 또는 develop 브랜치가 아닙니다. 태그에 브랜치 이름 '${branchTag}'을 사용합니다."
     }
     // generate dateTag and randomHash
